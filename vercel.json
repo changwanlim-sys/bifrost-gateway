@@ -1,0 +1,18 @@
+{
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/next"
+    },
+    {
+      "src": "api/gateway.go",
+      "use": "@vercel/go"
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/api/gateway",
+      "destination": "/api/gateway.go"
+    }
+  ]
+}
