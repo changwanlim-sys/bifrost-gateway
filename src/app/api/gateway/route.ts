@@ -16,7 +16,17 @@ export async function POST(req: Request) {
     if (authErr || !validKey || validKey.length === 0) {
       return NextResponse.json({ error: 'Unauthorized: Invalid or inactive API Key' }, { status: 401 });
     }
-    const apiKeyId = validKey[0].api_key_id;
+    const keyInfo = validKey[0];
+
+    // --- 🛡️ [NEW] 예산 소진 방어망 (Circuit Breaker) ---
+    if (keyInfo.is_blocked) {
+      return NextResponse.json({ error: 'Forbidden: API Key is temporarily blocked.' }, { status: 403 });
+    }
+    if (keyInfo.current_spend >= keyInfo.monthly_budget) {
+      return NextResponse.json({ error: 'Payment Required: Monthly allocated budget exceeded.' }, { status: 402 });
+    }
+    
+    const apiKeyId = keyInfo.api_key_id;
 
     // 3. Parse Request Body
     const body = await req.json();
