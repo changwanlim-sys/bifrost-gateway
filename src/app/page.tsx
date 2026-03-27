@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
-import { Key, Activity, Copy, LogOut, Loader2, Info, Plus, DollarSign, AlertTriangle, ShieldAlert } from 'lucide-react';
+import { Key, Activity, Copy, LogOut, Loader2, Info, Plus, DollarSign, AlertTriangle, ShieldAlert, RefreshCw } from 'lucide-react';
 
 export default function Dashboard() {
   const [session, setSession] = useState<any>(null);
@@ -395,9 +395,18 @@ export default function Dashboard() {
 
         {/* Real-time Ticker / Cost Ledger */}
         <section className="bg-[#0A0A0A] border border-gray-800 rounded-2xl p-6">
-          <div className="flex items-center gap-2 mb-6">
-            <Activity className="w-5 h-5 text-gray-400" />
-            <h2 className="text-xl font-bold text-white">Live Cost Ledger (실시간 지출 장부)</h2>
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-2">
+              <Activity className="w-5 h-5 text-gray-400" />
+              <h2 className="text-xl font-bold text-white">Live Cost Ledger (실시간 지출 장부)</h2>
+            </div>
+            <button 
+              onClick={() => { fetchUsage(); fetchKeys(); }}
+              className="flex items-center gap-2 px-3 py-1.5 bg-[#000000] border border-gray-800 hover:bg-gray-900 rounded-lg text-sm text-gray-400 hover:text-white transition-colors"
+            >
+              <RefreshCw className="w-4 h-4" />
+              새로고침
+            </button>
           </div>
 
           <div className="overflow-x-auto">
